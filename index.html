@@ -11,91 +11,135 @@
     <header class="header">
       <p class="badge">AeroPulse • Urban Air Quality Assistant</p>
       <h1 id="app-title">Urban Air Quality Check &amp; Assistant</h1>
-      <p class="subtitle">Check AQI status, outdoor safety guidance, and smart assistant tips for your city.</p>
+      <p class="subtitle">
+        Real-time AQI monitoring, household-personalized routines, indoor air hacks, and sustainable alternatives with clear impact reasons.
+      </p>
     </header>
 
-    <section class="card controls" aria-label="City and Air Quality Controls">
-      <div class="field-group">
-        <label for="citySelect">Select Urban Area</label>
-        <select id="citySelect">
-          <option value="surat">Surat (Sample AQI: 84 — Moderate)</option>
-          <option value="ahmedabad">Ahmedabad (Sample AQI: 118 — Sensitive)</option>
-          <option value="mumbai">Mumbai (Sample AQI: 62 — Moderate)</option>
-          <option value="delhi">Delhi (Sample AQI: 215 — Poor)</option>
-        </select>
+    <section class="card controls" aria-label="Location and Household Profile Controls">
+      <div class="grid-2">
+        <div class="field-group">
+          <label for="citySelect">Select Indian City</label>
+          <select id="citySelect">
+            <option value="surat">Surat, Gujarat</option>
+            <option value="delhi">New Delhi, Delhi</option>
+            <option value="mumbai">Mumbai, Maharashtra</option>
+            <option value="ahmedabad">Ahmedabad, Gujarat</option>
+            <option value="bengaluru">Bengaluru, Karnataka</option>
+            <option value="kolkata">Kolkata, West Bengal</option>
+            <option value="jaipur">Jaipur, Rajasthan</option>
+            <option value="lucknow">Lucknow, Uttar Pradesh</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="profileSelect">Household / Lifestyle Profile</label>
+          <select id="profileSelect">
+            <option value="family">Family with Young Children</option>
+            <option value="commuter">Working Professional (Daily Commuter)</option>
+            <option value="senior">Senior Citizen / Respiratory Sensitive</option>
+            <option value="student">Student / Outdoor Sports</option>
+          </select>
+        </div>
       </div>
 
       <div class="field-group">
-        <label for="customAqi">Or Enter Custom AQI (0–500)</label>
+        <label for="customAqi">Optional: Test Custom AQI Scenario (0–500)</label>
         <input
           type="number"
           id="customAqi"
           min="0"
           max="500"
-          placeholder="e.g., 95"
+          placeholder="Leave blank for live city AQI, or enter e.g. 240 to simulate smog"
         />
       </div>
 
       <div class="button-row">
-        <button type="button" id="analyzeBtn" class="btn primary">Analyze Air Quality</button>
-        <button type="button" id="resetBtn" class="btn secondary">Use City Sample</button>
+        <button id="fetchLiveBtn" class="btn primary">Fetch Live Air Quality</button>
+        <button id="geoBtn" class="btn secondary">Use My GPS Location</button>
+        <button id="simulateBtn" class="btn secondary">Simulate Custom AQI</button>
       </div>
     </section>
 
-    <section class="card status-panel" aria-live="polite">
-      <div class="aqi-summary">
+    <section class="card status-card" aria-live="polite">
+      <div class="status-top">
         <div>
-          <span class="label">Active Location</span>
-          <h2 id="locationName">Surat</h2>
+          <span class="label">ACTIVE LOCATION &amp; PROFILE</span>
+          <h2 id="locationTitle">Surat, Gujarat</h2>
+          <p id="profileBadge" class="profile-tag">Profile: Family with Young Children</p>
         </div>
-        <div class="aqi-score-box" id="aqiBadge">
-          <span class="label">AQI</span>
-          <strong id="aqiValue">84</strong>
+        <div id="aqiPill" class="aqi-pill moderate">
+          <span class="aqi-label">LIVE US AQI</span>
+          <strong id="aqiValue">--</strong>
         </div>
       </div>
 
-      <p id="categoryText" class="category-text">Moderate Air Quality</p>
-      <p id="guidanceText" class="guidance-text">
-        Acceptable air quality for most people. Sensitive groups should consider limiting prolonged outdoor exertion.
-      </p>
+      <h3 id="categoryTitle" class="category">Loading live data...</h3>
+      <p id="summaryText" class="summary">Fetching real-time atmospheric measurements...</p>
 
-      <div class="metrics-grid">
-        <div class="metric">
+      <div class="metrics">
+        <div class="metric-box">
           <span>PM2.5</span>
-          <strong id="pm25Value">28 µg/m³</strong>
+          <strong id="pm25Value">-- µg/m³</strong>
         </div>
-        <div class="metric">
+        <div class="metric-box">
           <span>PM10</span>
-          <strong id="pm10Value">64 µg/m³</strong>
+          <strong id="pm10Value">-- µg/m³</strong>
         </div>
-        <div class="metric">
-          <span>Mask Advice</span>
-          <strong id="maskValue">Optional for sensitive groups</strong>
+        <div class="metric-box">
+          <span>Mask Guidance</span>
+          <strong id="maskValue">--</strong>
         </div>
+      </div>
+
+      <p id="sourceMeta" class="source-meta">Source: Open-Meteo Air Quality API • Timestamp: --</p>
+    </section>
+
+    <section class="card guidance-card" aria-label="Personalized Action Plan">
+      <h2>Personalized Action Plan &amp; Impact Justification</h2>
+      <div class="plan-grid">
+        <article class="plan-box">
+          <h3>1. Low-Emission Daily Routine</h3>
+          <p id="routineAction">--</p>
+          <p class="why-box"><strong>Why this helps:</strong> <span id="routineWhy">--</span></p>
+        </article>
+
+        <article class="plan-box">
+          <h3>2. Indoor Air Quality Guidance</h3>
+          <p id="indoorAction">--</p>
+          <p class="why-box"><strong>Why this helps:</strong> <span id="indoorWhy">--</span></p>
+        </article>
+
+        <article class="plan-box">
+          <h3>3. Sustainable Alternative &amp; Impact</h3>
+          <p id="sustainableAction">--</p>
+          <p class="why-box"><strong>Direct impact:</strong> <span id="sustainableWhy">--</span></p>
+        </article>
       </div>
     </section>
 
-    <section class="card assistant-panel" aria-labelledby="assistant-heading">
-      <h2 id="assistant-heading">Ask the Air Quality Assistant</h2>
+    <section class="card assistant-card" aria-label="Interactive Air Quality Assistant">
+      <h2>Ask AeroPulse Assistant</h2>
+      <p class="subtitle">Ask about outdoor play, commute timing, indoor plants, masks, or smog reduction.</p>
+
       <div class="quick-prompts">
-        <button type="button" class="chip" data-question="Can I go for an evening run?">Evening run?</button>
-        <button type="button" class="chip" data-question="Should I keep windows open?">Windows open?</button>
-        <button type="button" class="chip" data-question="How can I protect kids and elderly at home?">Protect family?</button>
+        <button class="chip" data-q="Can children play outside right now?">Outdoor play safety?</button>
+        <button class="chip" data-q="How should I plan my commute today?">Best commute plan?</button>
+        <button class="chip" data-q="How can we clean indoor air without an expensive purifier?">Low-cost indoor hacks?</button>
+        <button class="chip" data-q="What sustainable swap reduces local smog most?">Sustainable impact?</button>
       </div>
 
-      <form id="chatForm" class="chat-form">
-        <label for="questionInput" class="sr-only">Ask a question about air quality</label>
+      <div class="ask-row">
         <input
           type="text"
-          id="questionInput"
-          placeholder="Ask about jogging, masks, ventilation, or indoor air..."
-          required
+          id="userQuestion"
+          placeholder="Ask a question for your location and household profile..."
         />
-        <button type="submit" class="btn primary">Ask</button>
-      </form>
+        <button id="askBtn" class="btn primary">Ask</button>
+      </div>
 
-      <div id="assistantReply" class="assistant-reply" role="region" aria-label="Assistant Response">
-        Select a city or click Analyze Air Quality to get tailored recommendations.
+      <div id="assistantReply" class="reply-box">
+        Select a city or ask a question above to get tailored, justified air-quality guidance.
       </div>
     </section>
   </main>
